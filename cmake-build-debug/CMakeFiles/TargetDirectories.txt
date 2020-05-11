@@ -1,0 +1,3 @@
+C:/Users/simon/Documents/Workspace/chess_semestral_work/cmake-build-debug/CMakeFiles/vavrasim.dir
+C:/Users/simon/Documents/Workspace/chess_semestral_work/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/simon/Documents/Workspace/chess_semestral_work/cmake-build-debug/CMakeFiles/rebuild_cache.dir

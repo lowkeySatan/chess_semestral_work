@@ -12,5 +12,8 @@ private:
     std::istream & m_Input;
     std::ostream & m_Output;
 
+public:
+    void Print();
+
 
 };
