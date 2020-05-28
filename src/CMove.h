@@ -2,8 +2,9 @@
 
 #pragma once
 
-#include "CSquare.h"
 #include "CBoard.h"
+#include "EPiece.h"
+#include "EColour.h"
 
 #include <string>
 
@@ -13,6 +14,7 @@ public:
     std::string m_destination;
     std::string m_origin;
     EPiece m_piece;
+    EColour m_colour
 
     void Print ( const CInterface & interface ) const;
 

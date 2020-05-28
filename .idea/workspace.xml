@@ -30,22 +30,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8b480192-500b-49c8-86c3-6d7b34f6f010" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CApplication.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/CApplication.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CArtifInt.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/CArtifInt.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CBoard.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/CBoard.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CCommand.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/CCommand.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/vavrasim.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/vavrasim.dir/depend.make" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CGame.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/CGame.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CInteface.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/CInteface.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CLoad.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CMove.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/CMove.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CPiece.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CSave.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +45,9 @@
     <option name="formatViaClangd" value="false" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1bkpvMfGKvHCOHU7aCu4mbpn6tU" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -78,71 +70,21 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
-      <module name="vavrasim" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Doctests">
-      <module name="vavrasim" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Unittests">
-      <module name="vavrasim" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="826bfd6f-0812-4196-9be5-e79b73cdee4e" name="Default Changelist" comment="" />
+      <changelist id="8b480192-500b-49c8-86c3-6d7b34f6f010" name="Default Changelist" comment="" />
       <created>1589186175227</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1589186175227</updated>
       <workItem from="1589186177038" duration="2509000" />
+      <workItem from="1589215616390" duration="126000" />
+      <workItem from="1590236897636" duration="4652000" />
+      <workItem from="1590329083152" duration="971000" />
     </task>
     <servers />
   </component>
@@ -150,6 +92,15 @@
     <option name="version" value="2" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">

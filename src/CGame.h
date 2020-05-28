@@ -14,7 +14,7 @@ class CGame
 {
 private:
     CBoard m_board;
-    std::vector<CMove>;
+    std::vector<CMove> m_moveLog;
 
 public:
     CGame ();
