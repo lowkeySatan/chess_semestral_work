@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <iostream>
 #include "EPiece.h"
 #include "EColour.h"
 
@@ -18,4 +19,7 @@ public:
     EPiece & GetPiece();
 
     EColour & GetColour();
+
+    std::ostream & Print ( std::ostream & os );
+
 };

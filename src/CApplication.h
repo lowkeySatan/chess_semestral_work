@@ -1,7 +1,6 @@
 //@author Simon Vavra <vavrasim@fit.cvut.cz>
 
 #pragma once
-#include "CInterface.h"
 #include "CGame.h"
 
 
@@ -9,9 +8,19 @@
 class CApplication
 {
 private:
-    CInterface m_CInterface;
+
     CGame m_CGame;
+    bool m_Running;
+
 public:
+
+    CApplication (){
+        m_Running = true;
+    };
+
     void Run();
-    bool AwaitCommand();
+
+    void GameLoop();
+
+    void Print ();
 };

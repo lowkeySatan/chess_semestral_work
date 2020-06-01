@@ -2,13 +2,13 @@
 
 #pragma once
 
-#include "CInterface.h"
 #include "CBoard.h"
 #include "CMove.h"
 
 #include <iostream>
 #include <string>
 #include <vector>
+
 
 class CGame
 {
@@ -19,12 +19,11 @@ private:
 public:
     CGame ();
 
-    CGame & NewGame();
-
-    void Print ( const CInterface & interface ) const;
+    void NewGame();
 
     bool Load ( const std::string & filename );
 
     bool Save ( const std::string & filename ) const;
+
 
 };

@@ -3,7 +3,9 @@
 #pragma once
 
 
-class CArtifInt
+#include "CPlayer.h"
+
+class CPlayerArtificial : private CPlayer
 {
 
 };

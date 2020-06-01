@@ -14,9 +14,7 @@ public:
     std::string m_destination;
     std::string m_origin;
     EPiece m_piece;
-    EColour m_colour
-
-    void Print ( const CInterface & interface ) const;
+    EColour m_colour;
 
     bool Validate  ( const CBoard & board ) const;
 

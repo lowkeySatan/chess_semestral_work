@@ -3,4 +3,4 @@ project(vavrasim)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(vavrasim main.cpp)
+add_executable(vavrasim main.cpp src/CPlayer.h src/CPlayerHuman.h)
