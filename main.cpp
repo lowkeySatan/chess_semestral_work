@@ -3,7 +3,7 @@
 int main() {
 
     CApplication * app = new CApplication();
-    app->AppLoop();
+    app->Run();
     delete app;
     return 0;
 }

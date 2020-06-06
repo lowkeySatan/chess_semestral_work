@@ -30,10 +30,10 @@ Implementace tradiční verze hry Šachy, využívající konzolové rozhraní p
 Celá aplikace je obsažena v třídě `CApplication`, kde je očekáván vstup uživatele v podobě třídy `CCommand` a to například:
 
 - `newgame` vytváří novou hru, aplikace se dále ptá na parametry hry ( počet lidských hráčů, výbér AI)
-- `load [filename.chs]` načte hru ze souboru
-- `save [filename.chs]` uloží hru do souboru
+- `loadgame [filename.chs]` načte hru ze souboru
+- `savegame [filename.chs]` uloží hru do souboru
 - `help` zobrazí nápovědu
-- `quit` ukončí program
+- `exit` ukončí program
 
 Třída `CInterface`, se stará o vypisování do konzole a čtení vstupu, jednotlivé hry se poté odehrávají ve třídě `CGame`, která pro svou funkcionalitu využívá několika podtříd.
 

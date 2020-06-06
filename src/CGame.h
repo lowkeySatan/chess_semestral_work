@@ -4,6 +4,8 @@
 
 #include "CBoard.h"
 #include "CMove.h"
+#include "CPlayer.h"
+#include "CPlayerArtificial.h"
 
 #include <iostream>
 #include <string>
@@ -13,11 +15,16 @@
 class CGame
 {
 private:
-    CBoard m_board;
-    std::vector<CMove> m_moveLog;
+    CBoard m_Board;
+    std::vector<CMove> m_MoveLog;
+    CPlayer * m_PlayerWhite;
+    CPlayer * m_PlayerBlack;
+    bool m_WhiteTurn;
+    short m_Score;
 
 public:
-    CGame ();
+
+    CGame() = default;
 
     void NewGame();
 
@@ -25,5 +32,10 @@ public:
 
     bool Save ( const std::string & filename ) const;
 
+    void Print ( const std::string & message ) const;
+
+    void SwitchTurn ();
+
+    std::stringstream AwaitMove ();
 
 };

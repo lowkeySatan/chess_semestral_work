@@ -14,12 +14,15 @@ private:
     EColour m_colour;
 
 public:
-    CSquare ( EPiece piece = EPiece::EMPTY, EColour colour = EColour::BLANK );
+    explicit CSquare ( EPiece piece = EPiece::EMPTY, EColour colour = EColour::BLANK )
+    {
+        m_piece = piece;
+        m_colour = colour;
+    }
+    EPiece GetPiece() const;
 
-    EPiece & GetPiece();
+    EColour GetColour() const;
 
-    EColour & GetColour();
-
-    std::ostream & Print ( std::ostream & os );
+    void Print ();
 
 };

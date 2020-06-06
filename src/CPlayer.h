@@ -2,18 +2,22 @@
 
 #pragma once
 
+#include <string>
+#include <sstream>
 #include "EColour.h"
+#include "CBoard.h"
+
 
 class CPlayer
 {
-private:
-
+protected:
     EColour m_PlayerColour;
+
+    virtual short GetStrength();
 
 public:
 
-    void AwaitMove();
+    CPlayer ( const EColour & colour );
 
-
-
+    virtual std::string AwaitMove( const CBoard & board );
 };

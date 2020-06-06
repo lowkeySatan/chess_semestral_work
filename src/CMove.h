@@ -18,4 +18,6 @@ public:
 
     bool Validate  ( const CBoard & board ) const;
 
+    void Print ();
+
 };

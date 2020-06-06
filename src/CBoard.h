@@ -3,7 +3,6 @@
 #pragma once
 
 #include <iostream>
-#include "EPiece.h"
 #include "CSquare.h"
 
 class CBoard
@@ -19,6 +18,7 @@ private:
     std::pair <int, int> m_EnPassant;
 
 public:
+
     CBoard ()
     {
         m_Board[0][0] = CSquare ( EPiece::ROOK, EColour::BLACK );
@@ -49,9 +49,9 @@ public:
                     m_Board[7][0] = CSquare ();
             }
         }
-    };
+    }
 
-    std::ostream & Print ( std::ostream & os );
+    void Print () const;
 
     bool CheckGameState();
 
