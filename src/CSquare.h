@@ -10,19 +10,18 @@
 class CSquare
 {
 private:
-    EPiece m_piece;
-    EColour m_colour;
+    EPiece m_Piece;
+    EColour m_PieceColour;
+    EColour m_Colour;
 
 public:
-    explicit CSquare ( EPiece piece = EPiece::EMPTY, EColour colour = EColour::BLANK )
-    {
-        m_piece = piece;
-        m_colour = colour;
-    }
+    explicit CSquare ( EColour colour = EColour::BLANK, EPiece piece = EPiece::EMPTY, EColour pieceColour = EColour::BLANK );
+
     EPiece GetPiece() const;
 
     EColour GetColour() const;
 
-    void Print ();
+    friend std::ostream & operator << ( std::ostream & os, const CSquare & square );
 
+    void ChangePiece ( const EPiece & piece, const EColour & colour );
 };

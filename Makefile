@@ -1,6 +1,6 @@
-chess: build/CSquare.o build/CBoard.o build/CMove.o build/CGame.o build/CCommand.o build/CApplication.o build/main.o build/CPlayer.o build/CPlayerArtificial.o
+all: build/CSquare.o build/CBoard.o build/CMove.o build/CGame.o build/CCommand.o build/CApplication.o build/main.o build/CPlayer.o build/CPlayerArtificial.o doc
 	mkdir -p build
-	g++ build/CSquare.o build/CBoard.o build/CMove.o build/CGame.o build/CCommand.o build/CApplication.o build/main.o build/CPlayer.o build/CPlayerArtificial.o -o chess
+	g++ build/CSquare.o build/CBoard.o build/CMove.o build/CGame.o build/CCommand.o build/CApplication.o build/main.o build/CPlayer.o build/CPlayerArtificial.o -o vavrasim
 
 build/main.o: main.cpp src/CApplication.h
 	mkdir -p build
@@ -38,11 +38,21 @@ build/CPlayerArtificial.o: src/CPlayerArtificial.cpp src/CPlayerArtificial.h src
 	mkdir -p build
 	g++ -g -Wall -pedantic -std=c++11 -c src/CPlayerArtificial.cpp -o build/CPlayerArtificial.o
 
+run: all
+	./vavrasim
+
+doc:
+	mkdir -p doc
+	-cp src/index.html doc/index.html
+
 clean:
-		rm chess
+		rm vavrasim
 		rm -r build
+		rm -r doc
 
 .PHONY: clean
+
+
 
 
 

@@ -11,5 +11,7 @@ enum class EPiece : char
     BISHOP = 'B',
     QUEEN = 'Q',
     KING = 'K',
-    EMPTY = '-'
+    EMPTY = ' '
 };
+
+//std::ostream & operator << ( std::ostream & os, const EPiece & piece )

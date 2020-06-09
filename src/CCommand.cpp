@@ -58,11 +58,27 @@ std::pair<int, std::string> CCommand::Do ( CGame & game )
             return std::make_pair ( 1, "Successfully started new game\n" );
 
         case ECommand::MOVE:
-            if ( !m_Param.empty() ) return std::make_pair ( 3, "move: Parameter not allowed\n" );
-            s = "Invalid move: ";
+            if ( !m_Param.empty() )
+                return std::make_pair ( 3, "move: Parameter not allowed\n" );
+            if ( m_Command[0] < 'a' || m_Command[0] > 'h' || m_Command[1] < '1' || m_Command[1] > '8' || m_Command[2] < 'a' || m_Command[2] > 'h' || m_Command[3] < '1' || m_Command[3] > '8' )
+            {
+                s = "Invalid move (please enter turns in [origin][destination] format, ex.(e7e5): ";
+                s += m_Command;
+                s += '\n';
+                return std::make_pair ( 3, s );
+            }
+            if ( game.MakeMove(m_Command) )
+            {
+                s = "Last turn: ";
+                s += m_Command;
+                s += '\n';
+                return std::make_pair ( 4, s );
+            }
+            s = "Move not allowed: ";
             s += m_Command;
             s += '\n';
             return std::make_pair ( 3, s );
+
 
         case ECommand::OTHER:
             s = "Invalid command: ";

@@ -4,59 +4,36 @@
 
 #include <iostream>
 #include "CSquare.h"
+class Cmove;
 
 class CBoard
 {
-private:
-    CSquare m_Board[8][8];
-    bool m_LeftRookW;
-    bool m_RightRookW;
-    bool m_KingW;
-    bool m_LeftRookB;
-    bool m_RightRookB;
-    bool m_KingB;
+public:
+    bool m_LeftCastlingW;
+
+    bool m_RightCastlingW;
+
+    bool m_LeftCastlingB;
+
+    bool m_RightCastlingB;
+
+    short m_Score;
+
     std::pair <int, int> m_EnPassant;
 
-public:
+    int m_EP_Allowed;
 
-    CBoard ()
-    {
-        m_Board[0][0] = CSquare ( EPiece::ROOK, EColour::BLACK );
-        m_Board[0][1] = CSquare ( EPiece::KNIGHT, EColour::BLACK );
-        m_Board[0][2] = CSquare ( EPiece::BISHOP, EColour::BLACK );
-        m_Board[0][3] = CSquare ( EPiece::QUEEN, EColour::BLACK );
-        m_Board[0][4] = CSquare ( EPiece::KING, EColour::BLACK );
-        m_Board[0][5] = CSquare ( EPiece::BISHOP, EColour::BLACK );
-        m_Board[0][6] = CSquare ( EPiece::KNIGHT, EColour::BLACK );
-        m_Board[0][7] = CSquare ( EPiece::ROOK, EColour::BLACK );
+    CSquare m_Board[8][8];
 
-        m_Board[7][0] = CSquare ( EPiece::ROOK, EColour::WHITE );
-        m_Board[7][1] = CSquare ( EPiece::KNIGHT, EColour::WHITE );
-        m_Board[7][2] = CSquare ( EPiece::BISHOP, EColour::WHITE );
-        m_Board[7][3] = CSquare ( EPiece::QUEEN, EColour::WHITE );
-        m_Board[7][4] = CSquare ( EPiece::KING, EColour::WHITE );
-        m_Board[7][5] = CSquare ( EPiece::BISHOP, EColour::WHITE );
-        m_Board[7][6] = CSquare ( EPiece::KNIGHT, EColour::WHITE );
-        m_Board[7][7] = CSquare ( EPiece::ROOK, EColour::WHITE );
+    CBoard ();
 
-        for (int i = 1; i < 7; ++i) {
-            for (int j = 0; j < 8; ++j) {
-                if ( i == 1 )
-                    m_Board[i][j] = CSquare ( EPiece::PAWN, EColour::BLACK );
-                else if ( i == 7 )
-                    m_Board[i][j] = CSquare ( EPiece::PAWN, EColour::WHITE );
-                else
-                    m_Board[7][0] = CSquare ();
-            }
-        }
-    }
+    void Print ( const bool & wTurn ) const;
 
-    void Print () const;
+    void ChangePiece ( const int & x, const int & y, const EPiece & piece, const EColour & colour );
 
-    bool CheckGameState();
+    int CheckGameState() const;
 
+    void ChangeScore ( const EPiece & piece, const EColour & colour );
 
-
-
-
+    bool CheckCheck( const EColour & colour, const int & x, const int & y ) const;
 };

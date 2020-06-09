@@ -20,7 +20,6 @@ private:
     CPlayer * m_PlayerWhite;
     CPlayer * m_PlayerBlack;
     bool m_WhiteTurn;
-    short m_Score;
 
 public:
 
@@ -35,6 +34,8 @@ public:
     void Print ( const std::string & message ) const;
 
     void SwitchTurn ();
+
+    bool MakeMove (const std::string & move );
 
     std::stringstream AwaitMove ();
 

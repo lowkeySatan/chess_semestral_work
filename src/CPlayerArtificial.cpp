@@ -4,9 +4,6 @@
 
 std::string CPlayerArtificial::AwaitMove(const CBoard &board)
 {
-    std::cout << "Jsem artificial a generuju tah\n";
-    std::cout << "Moje AI strenght je: " << this->GetStrength() << "\n";
-    std::cin.get();
     if ( this->GetStrength() == 1 ) return RandAI ( board );
     if ( this->GetStrength() == 2 ) return SemiRandAI ( board );
     if ( this->GetStrength() == 3 ) return  Minimax_T1 ( board );
@@ -21,16 +18,19 @@ CPlayerArtificial::CPlayerArtificial(const EColour &colour, const short &str)
 
 std::string CPlayerArtificial::RandAI(const CBoard &board)
 {
+    std::cin.get();
     return "rand\n";
 }
 
 std::string CPlayerArtificial::SemiRandAI(const CBoard &board)
 {
+    std::cin.get();
     return "semi\n";
 }
 
 std::string CPlayerArtificial::Minimax_T1(const CBoard &board)
 {
+    std::cin.get();
     return "mini\n";
 }
 

@@ -50,6 +50,9 @@ void CApplication::AwaitCommand()
     if ( outcome.first == -1 ) m_Running = false; //exit app
     if ( outcome.first ==  1 ) m_InGame = true;   //starts game
     if ( outcome.first ==  2 ) m_InGame = false;  //exits game
-    if ( outcome.first ==  3 && m_InGame ) m_CGame.SwitchTurn(); //invalid move, current player plays again
+    if ( outcome.first ==  3 && !m_InGame )
+        outcome.second = "Move error: game is not running\n";
+    if ( outcome.first == 4 && !m_InGame )
+        outcome.second = "Move error: game is not running\n";
     m_Message = outcome.second;
 }

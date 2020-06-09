@@ -5,7 +5,7 @@
 std::string CPlayer::AwaitMove(const CBoard &board)
 {
     std::string s;
-    std::cin >> s;
+    std::getline ( std::cin, s );
     return s;
 }
 
