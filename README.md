@@ -43,7 +43,7 @@ Třída `CGame` se stará o průběh jednoho zápasu, např. o jeho ukládání 
 Veškeré informace a stav hry je potom uložen ve třídě `CBoard`, která zároveň taky kontroluje status hry (Šach/Šach mat).
 Jednotlivé tahy jsou poté kotrolovány třídou `CMove`, která obsahuje veškerá pravidla hry včetně EnPassant, či Rošády.
 
-Aplikace není bohužel v aktuální stavu dokončena, není implementována umělá inteligence, načítání ani ukládáni a hra neumí rozeznat zda je aktuální situace šach, nebo ne.
+Aplikace není bohužel v aktuální stavu dokončena, není implementována umělá inteligence a nedokáže poznat šach mat.
 
 ## Využití polymorfismu
 
