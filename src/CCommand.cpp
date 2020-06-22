@@ -28,15 +28,15 @@ std::pair<int, std::string> CCommand::Do ( CGame & game )
 {
     std::string s;
     switch ( Resolve() ) {
-        case ECommand::EXIT:
+        case ECommand::EXIT: //!exits game
             if ( !m_Param.empty() ) return std::make_pair ( 0, "exit: Parameter not allowed\n" );
             return std::make_pair ( -1, "" );
 
-        case ECommand::HELP:
+        case ECommand::HELP: //!displays list of commands
             if ( !m_Param.empty() ) return std::make_pair ( 0, "help: Parameter not allowed\n" );
             return std::make_pair ( 0, "exit                  - Exits game (All unsaved progress will be lost!)\nhelp                  - Displays help (duh)\nloadgame \"filename\"   - Loads game from .chs file\nsavegame \"filename\"   - Saves game to .chs file\nnewgame               - Starts new game, prompts for additional info\n");
 
-        case ECommand::LOADGAME:
+        case ECommand::LOADGAME: //!loads game from file
             if ( m_Param.empty() ) return std::make_pair ( 0, "loadgame: Missing filename\n" );
             s = "Loaded from ";
             s+= this->m_Param;
@@ -44,7 +44,7 @@ std::pair<int, std::string> CCommand::Do ( CGame & game )
             game.Load( m_Param );
             return std::make_pair ( 1, s );
 
-        case ECommand::SAVEGAME:
+        case ECommand::SAVEGAME: //!saves game to file
             if ( m_Param.empty() ) return std::make_pair ( 0, "savegame: Missing filename\n" );
             s = "Successfully saved to ";
             s+= this->m_Param;
@@ -52,12 +52,12 @@ std::pair<int, std::string> CCommand::Do ( CGame & game )
             game.Save( m_Param );
             return std::make_pair ( 2, s );
 
-        case ECommand::NEWGAME:
+        case ECommand::NEWGAME: //!starts new game
             if ( !m_Param.empty() ) return std::make_pair ( 0, "newgame: Parameter not allowed\n" );
             game.NewGame();
             return std::make_pair ( 1, "Successfully started new game\n" );
 
-        case ECommand::MOVE:
+        case ECommand::MOVE: //!makes move on board
             if ( !m_Param.empty() )
                 return std::make_pair ( 3, "move: Parameter not allowed\n" );
             if ( m_Command[0] < 'a' || m_Command[0] > 'h' || m_Command[1] < '1' || m_Command[1] > '8' || m_Command[2] < 'a' || m_Command[2] > 'h' || m_Command[3] < '1' || m_Command[3] > '8' )
@@ -80,7 +80,7 @@ std::pair<int, std::string> CCommand::Do ( CGame & game )
             return std::make_pair ( 3, s );
 
 
-        case ECommand::OTHER:
+        case ECommand::OTHER: //!No viable command entered
             s = "Invalid command: ";
             s += m_Command;
             s += '\n';

@@ -4,13 +4,13 @@
 
 std::string CPlayerArtificial::AwaitMove(const CBoard &board)
 {
-    if ( this->GetStrength() == 1 ) return RandAI ( board );
-    if ( this->GetStrength() == 2 ) return SemiRandAI ( board );
-    if ( this->GetStrength() == 3 ) return  Minimax_T1 ( board );
+    if ( m_AI_Strength == 1 ) return RandAI ( board );
+    if ( m_AI_Strength == 2 ) return SemiRandAI ( board );
+    if ( m_AI_Strength == 3 ) return  Minimax_T1 ( board );
     else return "fail\n";
 }
 
-CPlayerArtificial::CPlayerArtificial(const EColour &colour, const short &str)
+CPlayerArtificial::CPlayerArtificial(const EColour &colour, const int &str)
         : CPlayer(colour)
         {
             m_AI_Strength = str;
@@ -32,9 +32,4 @@ std::string CPlayerArtificial::Minimax_T1(const CBoard &board)
 {
     std::cin.get();
     return "mini\n";
-}
-
-short CPlayerArtificial::GetStrength()
-{
-    return m_AI_Strength;
 }

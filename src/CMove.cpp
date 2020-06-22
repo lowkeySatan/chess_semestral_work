@@ -40,125 +40,119 @@ CMove::CMove(const std::string &move)
 
 bool CMove::PawnMove( CBoard &board, const EPiece &piece, const EColour &colour)
 {
-    switch (colour)
-    {
-        case EColour::WHITE:
-            if ( y1 - y2 == 1 || y1 - y2 == 2 )
-            {
-                if ( y1 - y2 == 2 && y1 != 6 )
-                    return false;
-                if ( x1 == x2 ){
-                    if (this->CheckPathVert(board)) {
-                        if (board.m_Board[y2][x2].GetPiece() == EPiece::EMPTY){
-                            board.ChangePiece( y1, x1, EPiece::EMPTY, EColour::BLANK );
-                            board.ChangePiece( y2, x2, piece, colour );
-                            if ( y1 - y2 == 2 ){
-                                board.m_EP_Allowed = 2;
-                                board.m_EnPassant = std::make_pair(y1 + 1, x1);
-                            }
-                            int tmp = board.CheckGameState();
-                            if ( tmp == -1 || tmp == 2 ) {
-                                board.ChangePiece(y2, x2, EPiece::EMPTY, EColour::BLANK);
-                                board.ChangePiece(y1, x1, piece, colour);
-                                return false;
-                            }
-                            return true;
+    if ( colour == EColour::WHITE ){
+        if (y1 - y2 == 1 || y1 - y2 == 2) {
+            if (y1 - y2 == 2 && y1 != 6)
+                return false;
+            if (x1 == x2) {
+                if (this->CheckPathVert(board)) {
+                    if (board.m_Board[y2][x2].GetPiece() == EPiece::EMPTY) {
+                        board.ChangePiece(y1, x1, EPiece::EMPTY, EColour::BLANK);
+                        board.ChangePiece(y2, x2, piece, colour);
+                        int tmp = board.CheckGameState();
+                        if (tmp == -1 || tmp == 2) {
+                            board.ChangePiece(y2, x2, EPiece::EMPTY, EColour::BLANK);
+                            board.ChangePiece(y1, x1, piece, colour);
+                            return false;
                         }
+                        if (y1 - y2 == 2) {
+                            board.m_EP_Allowed = 2;
+                            board.m_EnPassant = std::make_pair(y1 - 1, x1);
+                        }
+                        return true;
                     }
                 }
-                else{
-                    if ( y1 - y2 == 1 && abs( x1 - x2) == 1 ){
-                        if ( board.m_Board[y2][x2].GetPiece() != EPiece::EMPTY && board.m_Board[y2][x2].GetColour() != colour ){
-                            EPiece tmpPiece = board.m_Board[y2][x2].GetPiece();
-                            EColour tmpColour = board.m_Board[y2][x2].GetColour();
-                            board.ChangePiece( y1, x1, EPiece::EMPTY, EColour::BLANK );
-                            board.ChangePiece( y2, x2, piece, colour );
-                            int tmp = board.CheckGameState();
-                            if ( tmp == -1 || tmp == 2 ) {
-                                board.ChangePiece(y2, x2, tmpPiece, tmpColour);
-                                board.ChangePiece(y1, x1, piece, colour);
-                                return false;
-                            }
-                            board.ChangeScore ( tmpPiece, tmpColour);
-                            return true;
+            } else {
+                if (y1 - y2 == 1 && abs(x1 - x2) == 1) {
+                    if (board.m_Board[y2][x2].GetPiece() != EPiece::EMPTY && board.m_Board[y2][x2].GetColour() != colour) {
+                        EPiece tmpPiece = board.m_Board[y2][x2].GetPiece();
+                        EColour tmpColour = board.m_Board[y2][x2].GetColour();
+                        board.ChangePiece(y1, x1, EPiece::EMPTY, EColour::BLANK);
+                        board.ChangePiece(y2, x2, piece, colour);
+                        int tmp = board.CheckGameState();
+                        if (tmp == -1 || tmp == 2) {
+                            board.ChangePiece(y2, x2, tmpPiece, tmpColour);
+                            board.ChangePiece(y1, x1, piece, colour);
+                            return false;
                         }
+                        board.ChangeScore(tmpPiece, tmpColour);
+                        return true;
+                    }
 
-                        if ( board.m_EnPassant.first == y2 && board.m_EnPassant.second == x2 && board.m_EP_Allowed ){
-                            board.ChangePiece( y1, x1, EPiece::EMPTY, EColour::BLANK );
-                            board.ChangePiece( y2, x2, piece, colour );
-                            board.ChangePiece( y2+2, x2, EPiece::EMPTY, EColour::BLANK );
-                            int tmp = board.CheckGameState();
-                            if ( tmp == -1 || tmp == 2 ) {
-                                board.ChangePiece(y2, x2, EPiece::EMPTY, EColour::BLANK);
-                                board.ChangePiece(y1, x1, piece, colour);
-                                board.ChangePiece( y2+2, x2, EPiece::PAWN, EColour::BLACK );
-                                return false;
-                            }
-                            board.ChangeScore ( EPiece::PAWN, EColour::BLACK);
-                            return true;
+                    if (board.m_EnPassant.first == y2 && board.m_EnPassant.second == x2 && board.m_EP_Allowed) {
+                        board.ChangePiece(y1, x1, EPiece::EMPTY, EColour::BLANK);
+                        board.ChangePiece(y2, x2, piece, colour);
+                        board.ChangePiece(y2 + 1, x2, EPiece::EMPTY, EColour::BLANK);
+                        int tmp = board.CheckGameState();
+                        if (tmp == -1 || tmp == 2) {
+                            board.ChangePiece(y2, x2, EPiece::EMPTY, EColour::BLANK);
+                            board.ChangePiece(y1, x1, piece, colour);
+                            board.ChangePiece(y2 + 1, x2, EPiece::PAWN, EColour::BLACK);
+                            return false;
                         }
+                        board.ChangeScore(EPiece::PAWN, EColour::BLACK);
+                        return true;
                     }
                 }
             }
-            return false;
-        case EColour::BLACK:
-            if ( y2 - y1 == 1 || y2 - y1 == 2 ){
-                if ( y2 - y1 == 2 && y1 != 1 )
-                    return false;
-                if ( x1 == x2 ){
-                    if (this->CheckPathVert(board)) {
-                        if (board.m_Board[y2][x2].GetPiece() == EPiece::EMPTY){
-                            board.ChangePiece( y1, x1, EPiece::EMPTY, EColour::BLANK );
-                            board.ChangePiece( y2, x2, piece, colour );
-                            if ( y2 - y1 == 2 ) {
-                                board.m_EP_Allowed = 2;
-                                board.m_EnPassant = std::make_pair(y1 + 1, x1);
-                            }
-                            int tmp = board.CheckGameState();
-                            if ( tmp == 1 || tmp == 2 ) {
-                                board.ChangePiece(y2, x2, EPiece::EMPTY, EColour::BLANK);
-                                board.ChangePiece(y1, x1, piece, colour);
-                                return false;
-                            }
-                            return true;
+        }
+    }
+    else{
+        if ( y2 - y1 == 1 || y2 - y1 == 2 ){
+            if ( y2 - y1 == 2 && y1 != 1 )
+                return false;
+            if ( x1 == x2 ){
+                if (this->CheckPathVert(board)) {
+                    if (board.m_Board[y2][x2].GetPiece() == EPiece::EMPTY){
+                        board.ChangePiece( y1, x1, EPiece::EMPTY, EColour::BLANK );
+                        board.ChangePiece( y2, x2, piece, colour );
+                        int tmp = board.CheckGameState();
+                        if ( tmp == 1 || tmp == 2 ) {
+                            board.ChangePiece(y2, x2, EPiece::EMPTY, EColour::BLANK);
+                            board.ChangePiece(y1, x1, piece, colour);
+                            return false;
                         }
-                    }
-                }
-                else{
-                    if ( y2 - y1 == 1 && abs( x1 - x2) == 1 ){
-                        if ( board.m_Board[y2][x2].GetPiece() != EPiece::EMPTY && board.m_Board[y2][x2].GetColour() != colour ){                            std::cout << "Neni tam prazdno\n";
-                            EPiece tmpPiece = board.m_Board[y2][x2].GetPiece();
-                            EColour tmpColour = board.m_Board[y2][x2].GetColour();
-                            board.ChangePiece( y1, x1, EPiece::EMPTY, EColour::BLANK );
-                            board.ChangePiece( y2, x2, piece, colour );
-                            int tmp = board.CheckGameState();
-                            if ( tmp == 1 || tmp == 2 ) {
-                                board.ChangePiece(y2, x2, tmpPiece, tmpColour);
-                                board.ChangePiece(y1, x1, piece, colour);
-                                return false;
-                            }
-                            board.ChangeScore ( tmpPiece, tmpColour);
-                            return true;
+                        if ( y2 - y1 == 2 ) {
+                            board.m_EP_Allowed = 2;
+                            board.m_EnPassant = std::make_pair(y1 + 1, x1);
                         }
-                        if ( board.m_EnPassant.first == y2 && board.m_EnPassant.second == x2 && board.m_EP_Allowed ){
-                            board.ChangePiece( y1, x1, EPiece::EMPTY, EColour::BLANK );
-                            board.ChangePiece( y2, x2, piece, colour );
-                            board.ChangePiece( y2-2, x2, EPiece::EMPTY, EColour::BLANK );
-                            int tmp = board.CheckGameState();
-                            if ( tmp == 1 || tmp == 2 ) {
-                                board.ChangePiece(y2, x2, EPiece::EMPTY, EColour::BLANK);
-                                board.ChangePiece(y1, x1, piece, colour);
-                                board.ChangePiece( y2+2, x2, EPiece::PAWN, EColour::WHITE );
-                                return false;
-                            }
-                            board.ChangeScore ( EPiece::PAWN, EColour::WHITE);
-                            return true;
-                        }
+                        return true;
                     }
                 }
             }
-        case EColour::BLANK:
-            break;
+            else{
+                if ( y2 - y1 == 1 && abs( x1 - x2) == 1 ){
+                    if ( board.m_Board[y2][x2].GetPiece() != EPiece::EMPTY && board.m_Board[y2][x2].GetColour() != colour ){                            std::cout << "Neni tam prazdno\n";
+                        EPiece tmpPiece = board.m_Board[y2][x2].GetPiece();
+                        EColour tmpColour = board.m_Board[y2][x2].GetColour();
+                        board.ChangePiece( y1, x1, EPiece::EMPTY, EColour::BLANK );
+                        board.ChangePiece( y2, x2, piece, colour );
+                        int tmp = board.CheckGameState();
+                        if ( tmp == 1 || tmp == 2 ) {
+                            board.ChangePiece(y2, x2, tmpPiece, tmpColour);
+                            board.ChangePiece(y1, x1, piece, colour);
+                            return false;
+                        }
+                        board.ChangeScore ( tmpPiece, tmpColour);
+                        return true;
+                    }
+                    if ( board.m_EnPassant.first == y2 && board.m_EnPassant.second == x2 && board.m_EP_Allowed ){
+                        board.ChangePiece( y1, x1, EPiece::EMPTY, EColour::BLANK );
+                        board.ChangePiece( y2, x2, piece, colour );
+                        board.ChangePiece( y2-1, x2, EPiece::EMPTY, EColour::BLANK );
+                        int tmp = board.CheckGameState();
+                        if ( tmp == 1 || tmp == 2 ) {
+                            board.ChangePiece(y2, x2, EPiece::EMPTY, EColour::BLANK);
+                            board.ChangePiece(y1, x1, piece, colour);
+                            board.ChangePiece( y2-1, x2, EPiece::PAWN, EColour::WHITE );
+                            return false;
+                        }
+                        board.ChangeScore ( EPiece::PAWN, EColour::WHITE);
+                        return true;
+                    }
+                }
+            }
+        }
     }
     return false;
 }
@@ -199,7 +193,6 @@ bool CMove::QueenMove(CBoard &board, const EPiece &piece, const EColour &colour)
 bool CMove::KingMove(CBoard &board, const EPiece &piece, const EColour &colour) {
     if ( ( abs(x1 - x2) == 1 || (abs(x1 - x2) == 0 || abs(y1 - y2) == 1 || abs(y1 - y2) == 0) ) && ( abs(x1 - x2) > 1 && abs(y1 - y2) > 1 ) && !( abs(x1 - x2) == 0 && abs(y1 - y2) == 0 ) )
         if ( this->Take(board, piece, colour) ) {
-            std::cout<< "yeah normalni king tah \n";
             if ( colour == EColour::WHITE ){
                 board.m_RightCastlingW = false;
                 board.m_LeftCastlingW = false;
@@ -212,7 +205,6 @@ bool CMove::KingMove(CBoard &board, const EPiece &piece, const EColour &colour) 
             return true;
         }
     if ( ( abs(x1 - x2) == 2 || abs(x1 - x2) == 3 ) && y1 == y2 ) {
-        std::cout<< "huh asi jdu castlit\n";
         if (this->Castling(board))
             return true;
     }
@@ -222,7 +214,6 @@ bool CMove::KingMove(CBoard &board, const EPiece &piece, const EColour &colour) 
 
 bool CMove::CheckPathVert(const CBoard &board) const
 {
-    std::cout << "Check path vertical\n";
     int a, b;
     if ( y1 > y2 )
     {
@@ -235,9 +226,8 @@ bool CMove::CheckPathVert(const CBoard &board) const
         b = y2;
     }
     for (int i = a; i < b; ++i)
-        if ( board.m_Board[i][x1].GetPiece() != EPiece::EMPTY ){
-            std::cout << "Error at: " << i << x1 << std::endl;
-            return false;}
+        if ( board.m_Board[i][x1].GetPiece() != EPiece::EMPTY )
+            return false;
     return true;
 }
 
@@ -255,9 +245,8 @@ bool CMove::CheckPathHor(const CBoard &board) const
         b = x2;
     }
     for (int i = a; i < b; ++i)
-        if ( board.m_Board[y1][i].GetPiece() != EPiece::EMPTY ){
-            std::cout << "Error at: " << y1 << i << std::endl;
-            return false;}
+        if ( board.m_Board[y1][i].GetPiece() != EPiece::EMPTY )
+            return false;
     return true;
 }
 
@@ -312,24 +301,20 @@ bool CMove::CheckPathDiag(const CBoard &board) const
 
 bool CMove::Take( CBoard & board, const EPiece & piece, const EColour & colour )
 {
-    std::cout << "Jdu na check\n";
+    EPiece tmpPiece = board.m_Board[y2][x2].GetPiece();
+    EColour tmpColour = board.m_Board[y2][x2].GetColour();
+    if ( tmpColour == colour )
+        return false;
+    board.ChangePiece(y1, x1, EPiece::EMPTY, EColour::BLANK);
+    board.ChangePiece(y2, x2, piece, colour);
     int tmp = board.CheckGameState();
-    std::cout << "Vysledek: " << tmp << std::endl;
-    if ( tmp == 0 || ( colour == EColour::WHITE && tmp == 1 ) || ( colour == EColour::BLACK && tmp == -1 ) ) {
-        EPiece tmpPiece = board.m_Board[y2][x2].GetPiece();
-        EColour tmpColour = board.m_Board[y2][x2].GetColour();
-        board.ChangePiece(y1, x1, EPiece::EMPTY, EColour::BLANK);
-        board.ChangePiece(y2, x2, piece, colour);
-        tmp = board.CheckGameState();
-        if ( ( tmp == 1 && colour == EColour::BLACK ) || ( tmp == -1 && colour == EColour::WHITE ) || tmp == 2 ) {
-            board.ChangePiece(y2, x2, tmpPiece, tmpColour);
-            board.ChangePiece(y1, x1, piece, colour);
-            return false;
-        }
-        board.ChangeScore(tmpPiece, tmpColour);
-        return true;
+    if ( ( tmp == 1 && colour == EColour::BLACK ) || ( tmp == -1 && colour == EColour::WHITE ) || tmp == 2 ) {
+        board.ChangePiece(y2, x2, tmpPiece, tmpColour);
+        board.ChangePiece(y1, x1, piece, colour);
+        return false;
     }
-    return false;
+    board.ChangeScore(tmpPiece, tmpColour);
+    return true;
 }
 
 bool CMove::Castling(CBoard &board) {
@@ -417,4 +402,9 @@ bool CMove::Castling(CBoard &board) {
         }
     }
     return false;
+}
+
+std::ostream & operator << ( std::ostream &os, const CMove &move ) {
+    os << move.m_MoveTranscript;
+    return os;
 }

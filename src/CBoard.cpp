@@ -4,11 +4,17 @@
 
 CBoard::CBoard()
 {
+    this->New();
+}
+
+void CBoard::New()
+{
     m_LeftCastlingB = true;
     m_LeftCastlingW = true;
     m_RightCastlingB = true;
     m_RightCastlingW = true;
     m_EP_Allowed = 0;
+    m_Score = 0;
     m_Board[0][0] = CSquare ( EColour::WHITE, EPiece::ROOK, EColour::BLACK );
     m_Board[0][1] = CSquare ( EColour::BLACK, EPiece::KNIGHT, EColour::BLACK );
     m_Board[0][2] = CSquare ( EColour::WHITE, EPiece::BISHOP, EColour::BLACK );
@@ -24,7 +30,6 @@ CBoard::CBoard()
         else
             m_Board[1][i] = CSquare ( EColour::BLACK, EPiece::PAWN, EColour::BLACK );
     }
-
     m_Board[7][0] = CSquare ( EColour::BLACK, EPiece::ROOK, EColour::WHITE );
     m_Board[7][1] = CSquare ( EColour::WHITE, EPiece::KNIGHT, EColour::WHITE );
     m_Board[7][2] = CSquare ( EColour::BLACK, EPiece::BISHOP, EColour::WHITE );
@@ -40,7 +45,6 @@ CBoard::CBoard()
         else
             m_Board[6][i] = CSquare ( EColour::WHITE, EPiece::PAWN, EColour::WHITE );
     }
-
     for (int i = 2; i < 6; ++i)
         for (int j = 0; j < 8; ++j)
         {
@@ -59,12 +63,11 @@ CBoard::CBoard()
                     m_Board[i][j] = CSquare ( EColour::WHITE, EPiece::EMPTY, EColour::BLANK );
             }
         }
-
 }
 
 void CBoard::Print (const bool &wTurn) const
 {
-    std::cout << "        ____  ___   ____  ___   ____  ____  ____  _  _ \n"
+    std::cout << "\n        ____  ___   ____  ___   ____  ____  ____  _  _ \n"
               << "        |__|  |__]  |     |  \\  |___  |___  | __  |__| \n"
               << "        |  |  |__]  |___  |__/  |___  |     |__]  |  | \n"
               << "      ╔════════════════════════════════════════════════╗ Legend:\n      ║"
@@ -88,9 +91,17 @@ void CBoard::Print (const bool &wTurn) const
               << "██████      ██████      ██████      ██████      ║ \n   __ ║"
               << "      ██████      ██████      ██████      ██████║ \n  |_  ║"
               << "  " << m_Board[5][0] << "  ██" << m_Board[5][1] << "██  " << m_Board[5][2] << "  ██" << m_Board[5][3] << "██  "  << m_Board[5][4] << "  ██" << m_Board[5][5] << "██  " << m_Board[5][6] << "  ██" << m_Board[5][7] << "██║ GameStatus: ";
-                if (this->CheckGameState() == 0 ) std::cout << "Neutral";
-                if (this->CheckGameState() == 1 ) std::cout << "Black Check";
-                if (this->CheckGameState() == -1 ) std::cout << "White Check";
+    switch ( this->CheckGameState() ) {
+        case 0:
+            std::cout << "Neutral";
+            break;
+        case 1:
+            std::cout << "Black Check";
+            break;
+        case -1:
+            std::cout << "White Check";
+            break;
+    }
     std::cout << "\n  |_) ║"
               << "      ██████      ██████      ██████      ██████║ \n   __ ║"
               << "██████      ██████      ██████      ██████      ║ \n    / ║"
@@ -172,74 +183,161 @@ void CBoard::ChangeScore(const EPiece &piece, const EColour &colour)
     }
 }
 
-bool CBoard::CheckCheck(const EColour &colour, const int &x, const int &y) const
-{
+bool CBoard::CheckCheck(const EColour &colour, const int &x, const int &y) const {
+    bool flag = false;
     EPiece piece;
-    for (int i = 0; i < 8; ++i) {
-        if ( m_Board[y][i].GetColour() == colour )
-            piece = m_Board[y][i].GetPiece();
-        if ( piece == EPiece::ROOK || piece == EPiece::QUEEN || ( piece == EPiece::KING && abs(i-x) == 1 ) )
-            return true;
+    for (int i = 0; i < x; ++i) { //horizontal left
+        piece = m_Board[y][i].GetPiece();
+        if (piece != EPiece::EMPTY)
+            flag = (piece == EPiece::ROOK || piece == EPiece::QUEEN || (piece == EPiece::KING && abs(i - x) == 1)) && m_Board[y][i].GetColour() == colour;
     }
+    if (flag)
+        return true;
+    flag = false;
 
-    for (int i = 0; i < 8; ++i) {
-        if ( m_Board[i][x].GetColour() == colour )
-            piece = m_Board[i][x].GetPiece();
-        if ( piece == EPiece::ROOK || piece == EPiece::QUEEN || ( piece == EPiece::KING && abs(i-y) == 1 ) )
-            return true;
+    for (int i = 8; i > x; --i) { //horizontal right
+        piece = m_Board[y][i].GetPiece();
+        if (piece != EPiece::EMPTY)
+            flag = (piece == EPiece::ROOK || piece == EPiece::QUEEN || (piece == EPiece::KING && abs(i - x) == 1)) && m_Board[y][i].GetColour() == colour;
     }
+    if (flag)
+        return true;
+    flag = false;
 
-    int j = y;
-    int i = x;
-    while ( j < 8 && i < 8 ){ //right down
-        if ( m_Board[i][j].GetColour() == colour )
-            piece = m_Board[j][i].GetPiece();
-        if ( piece == EPiece::BISHOP || piece == EPiece::QUEEN || ( piece == EPiece::KING && abs(i-y) == 1 ) )
-            return true;
-        if ( piece == EPiece::PAWN && colour == EColour::WHITE && i-y == 1 )
-            return true;
-        j++;
+    for (int i = 0; i < y; ++i) { //vertical up
+        piece = m_Board[i][x].GetPiece();
+        if (piece != EPiece::EMPTY)
+            flag = (piece == EPiece::ROOK || piece == EPiece::QUEEN || (piece == EPiece::KING && abs(i - x) == 1)) && m_Board[i][x].GetColour() == colour;
+    }
+    if (flag)
+        return true;
+    flag = false;
+
+    for (int i = 8; i > y; --i) { //vertical down
+        piece = m_Board[i][x].GetPiece();
+        if (piece != EPiece::EMPTY)
+            flag = (piece == EPiece::ROOK || piece == EPiece::QUEEN || (piece == EPiece::KING && abs(i - y) == 1)) && m_Board[i][x].GetColour() == colour;
+    }
+    if (flag)
+        return true;
+    flag = false;
+
+    int j = y, i = x;
+    while (j < 8 && i < 8) { //diagonal right down
         i++;
+        j++;
+        piece = m_Board[j][i].GetPiece();
+        if (piece != EPiece::EMPTY) {
+            if ((piece == EPiece::BISHOP || piece == EPiece::QUEEN || (piece == EPiece::KING && abs(i - y) == 1) || (piece == EPiece::PAWN && colour == EColour::WHITE && i-y == 1))
+            && m_Board[j][i].GetColour() == colour ){
+                flag = true;
+                break;
+            }
+            else
+                break;
+        }
     }
+    if (flag)
+        return true;
+    flag = false;
 
     j = y;
     i = x;
-    while ( j < 8 && i >= 0 ){ //left down
-        if ( m_Board[i][j].GetColour() == colour )
-            piece = m_Board[j][i].GetPiece();
-        if ( piece == EPiece::BISHOP || piece == EPiece::QUEEN || ( piece == EPiece::KING && abs(i-y) == 1 ) )
-            return true;
-        if ( piece == EPiece::PAWN && colour == EColour::WHITE && i-y == 1 )
-            return true;
+    while (j < 8 && i >= 0) { //diagonal left down
         j++;
         i--;
+        piece = m_Board[j][i].GetPiece();
+        if (piece != EPiece::EMPTY) {
+            if ((piece == EPiece::BISHOP || piece == EPiece::QUEEN || (piece == EPiece::KING && abs(i - y) == 1) || (piece == EPiece::PAWN && colour == EColour::WHITE && i-y == 1))
+                && m_Board[j][i].GetColour() == colour ) {
+                flag = true;
+                break;
+            }
+            else
+                break;
+        }
     }
+    if (flag)
+        return true;
+    flag = false;
 
     j = y;
     i = x;
-    while ( j >= 0 && i >= 0 ){ //left up
-        if ( m_Board[i][j].GetColour() == colour )
-            piece = m_Board[j][i].GetPiece();
-        if ( piece == EPiece::BISHOP || piece == EPiece::QUEEN || ( piece == EPiece::KING && abs(i-y) == 1 ) )
-            return true;
-        if ( piece == EPiece::PAWN && colour == EColour::BLACK && y-i == 1 )
-            return true;
+    while (j >= 0 && i >= 0) { //diagonal left up
         j--;
         i--;
+        piece = m_Board[j][i].GetPiece();
+        if (piece != EPiece::EMPTY) {
+            if ((piece == EPiece::BISHOP || piece == EPiece::QUEEN || (piece == EPiece::KING && abs(i - y) == 1) || (piece == EPiece::PAWN && colour == EColour::BLACK && i-y == -1))
+                && m_Board[j][i].GetColour() == colour ){
+                flag = true;
+                break;
+            }
+            else
+                break;
+        }
     }
+    if (flag)
+        return true;
+    flag = false;
 
     j = y;
     i = x;
-    while ( j >= 0 && i < 8 ){ //right up
-        if ( m_Board[i][j].GetColour() == colour )
-            piece = m_Board[j][i].GetPiece();
-        if ( piece == EPiece::BISHOP || piece == EPiece::QUEEN || ( piece == EPiece::KING && abs(i-y) == 1 ) )
-            return true;
-        if ( piece == EPiece::PAWN && colour == EColour::BLACK && y-i == 1 )
-            return true;
+    while (j >= 0 && i < 8) { //diagonal right up
         j--;
         i++;
+        piece = m_Board[j][i].GetPiece();
+        if (piece != EPiece::EMPTY) {
+            if ((piece == EPiece::BISHOP || piece == EPiece::QUEEN || (piece == EPiece::KING && abs(i - y) == 1) || (piece == EPiece::PAWN && colour == EColour::BLACK && i-y == -1))
+                && m_Board[j][i].GetColour() == colour ){
+                flag = true;
+                break;
+            }
+            else
+                break;
+        }
     }
+    if (flag){
+        std::cout << "dru";
+        return true;
+    }
+
+    if ( y > 1 ){//knights
+        if ( x > 0 )
+            if ( m_Board[y-2][x-1].GetPiece() == EPiece::KNIGHT && m_Board[y-2][x-1].GetColour() == colour )
+                return true;
+        if ( x < 7 )
+            if ( m_Board[y-2][x+1].GetPiece() == EPiece::KNIGHT && m_Board[y-2][x+1].GetColour() == colour )
+                return true;
+    }
+
+    if ( y < 6 ){
+        if ( x > 0 )
+            if ( m_Board[y+2][x-1].GetPiece() == EPiece::KNIGHT && m_Board[y-2][x-1].GetColour() == colour )
+                return true;
+        if ( x < 7 )
+            if ( m_Board[y+2][x+1].GetPiece() == EPiece::KNIGHT && m_Board[y-2][x+1].GetColour() == colour )
+                return true;
+    }
+
+    if ( x > 1 ){
+        if ( y > 0 )
+            if ( m_Board[y-1][x-2].GetPiece() == EPiece::KNIGHT && m_Board[y-1][x-2].GetColour() == colour )
+                return true;
+        if ( y < 7 )
+            if ( m_Board[y+1][x-2].GetPiece() == EPiece::KNIGHT && m_Board[y+1][x-2].GetColour() == colour )
+                return true;
+    }
+
+    if ( x < 6 ){
+        if ( y > 0 )
+            if ( m_Board[y-1][x+2].GetPiece() == EPiece::KNIGHT && m_Board[y-1][x+2].GetColour() == colour )
+                return true;
+        if ( y < 7 )
+            if ( m_Board[y+1][x+2].GetPiece() == EPiece::KNIGHT && m_Board[y+1][x+2].GetColour() == colour )
+                return true;
+    }
+
 
 
     return false;

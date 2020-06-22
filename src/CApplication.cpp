@@ -5,15 +5,10 @@ void CApplication::Run()
 {
     while ( m_Running )
     {
-        this->MenuLoop();
+        if ( !m_InGame ) this->PrintMenu();
+        else m_CGame.Print( m_Message );
+        this->AwaitCommand();
     }
-}
-
-void CApplication::MenuLoop()
-{
-    if ( !m_InGame ) this->PrintMenu();
-    else m_CGame.Print( m_Message );
-    this->AwaitCommand();
 }
 
 void CApplication::PrintMenu()

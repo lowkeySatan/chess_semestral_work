@@ -2,9 +2,9 @@ all: build/CSquare.o build/CBoard.o build/CMove.o build/CGame.o build/CCommand.o
 	mkdir -p build
 	g++ build/CSquare.o build/CBoard.o build/CMove.o build/CGame.o build/CCommand.o build/CApplication.o build/main.o build/CPlayer.o build/CPlayerArtificial.o -o vavrasim
 
-build/main.o: main.cpp src/CApplication.h
+build/main.o: src/main.cpp src/CApplication.h
 	mkdir -p build
-	g++ -g -Wall -pedantic -std=c++11 -c main.cpp -o build/main.o
+	g++ -g -Wall -pedantic -std=c++11 -c src/main.cpp -o build/main.o
 
 build/CApplication.o: src/CApplication.cpp src/CApplication.h src/CGame.h src/CGame.cpp src/CCommand.h
 	mkdir -p build
@@ -43,14 +43,19 @@ run: all
 
 doc:
 	mkdir -p doc
-	-cp src/index.html doc/index.html
+	@doxygen src/Doxyfile
+	rm -r latex
+	mv html/* doc
+	rm -r html
+
+
 
 clean:
 		rm vavrasim
 		rm -r build
 		rm -r doc
 
-.PHONY: clean
+.PHONY: clean doc
 
 
 

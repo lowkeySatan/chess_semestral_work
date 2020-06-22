@@ -13,8 +13,3 @@ CPlayer::CPlayer(const EColour &colour)
 {
     m_PlayerColour = colour;
 }
-
-short CPlayer::GetStrength()
-{
-    return 0;
-}
