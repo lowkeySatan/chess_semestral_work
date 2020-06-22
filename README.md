@@ -34,8 +34,8 @@ Bude v nich také specifikováno, jaká strana je jak ovládána. Samotná hra s
 Celá aplikace je obsažena v třídě `CApplication`, kde je očekáván vstup uživatele v podobě třídy `CCommand` a to například:
 
 - `newgame` vytváří novou hru, aplikace se dále ptá na parametry hry ( počet lidských hráčů, výbér AI)
-- `loadgame [filename.chs]` načte hru ze souboru
-- `savegame [filename.chs]` uloží hru do souboru
+- `loadgame [filename]` načte hru ze souboru
+- `savegame [filename]` uloží hru do souboru
 - `help` zobrazí nápovědu
 - `exit` ukončí program
 
