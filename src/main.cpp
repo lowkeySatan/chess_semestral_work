@@ -1,4 +1,4 @@
-#include "src/CApplication.h"
+#include "CApplication.h"
 
 int main() {
 

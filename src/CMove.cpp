@@ -4,6 +4,7 @@
 
 bool CMove::MakeMove(CBoard &board,const bool &whiteTurn)
 {
+    //!Decides if you can move selected piece and the calls respective method for each piece
     EPiece piece = board.m_Board[y1][x1].GetPiece();
     EColour colour = board.m_Board[y1][x1].GetColour();
     if ( colour == EColour::BLANK ) return false;
@@ -31,6 +32,7 @@ bool CMove::MakeMove(CBoard &board,const bool &whiteTurn)
 
 CMove::CMove(const std::string &move)
 {
+    //!Parses move to usable form
     m_MoveTranscript = move;
     x1 = ( move[0] - 'a' );
     y1 = ( move[1] - '1' );
@@ -40,51 +42,55 @@ CMove::CMove(const std::string &move)
 
 bool CMove::PawnMove( CBoard &board, const EPiece &piece, const EColour &colour)
 {
-    if ( colour == EColour::WHITE ){
+    if ( colour == EColour::WHITE ){ //!Movement differs for white and black pawns
         if (y1 - y2 == 1 || y1 - y2 == 2) {
             if (y1 - y2 == 2 && y1 != 6)
                 return false;
             if (x1 == x2) {
-                if (this->CheckPathVert(board)) {
+                if (this->CheckPathVert(board)) { //!Either moves forward or captures enemy pieces
                     if (board.m_Board[y2][x2].GetPiece() == EPiece::EMPTY) {
                         board.ChangePiece(y1, x1, EPiece::EMPTY, EColour::BLANK);
                         board.ChangePiece(y2, x2, piece, colour);
                         int tmp = board.CheckGameState();
-                        if (tmp == -1 || tmp == 2) {
+                        if (tmp == -1 || tmp == 2) {//!Puts own king in check, undo move
                             board.ChangePiece(y2, x2, EPiece::EMPTY, EColour::BLANK);
                             board.ChangePiece(y1, x1, piece, colour);
                             return false;
                         }
-                        if (y1 - y2 == 2) {
+                        if (y1 - y2 == 2) { //!Makes enpassant possible
                             board.m_EP_Allowed = 2;
                             board.m_EnPassant = std::make_pair(y1 - 1, x1);
                         }
+                        if ( y2 == 0 ) //!Pawn promotion
+                            board.ChangePiece(y2, x2, EPiece::QUEEN, EColour::WHITE);
                         return true;
                     }
                 }
             } else {
-                if (y1 - y2 == 1 && abs(x1 - x2) == 1) {
+                if (y1 - y2 == 1 && abs(x1 - x2) == 1) {//!Captures
                     if (board.m_Board[y2][x2].GetPiece() != EPiece::EMPTY && board.m_Board[y2][x2].GetColour() != colour) {
                         EPiece tmpPiece = board.m_Board[y2][x2].GetPiece();
                         EColour tmpColour = board.m_Board[y2][x2].GetColour();
                         board.ChangePiece(y1, x1, EPiece::EMPTY, EColour::BLANK);
                         board.ChangePiece(y2, x2, piece, colour);
                         int tmp = board.CheckGameState();
-                        if (tmp == -1 || tmp == 2) {
+                        if (tmp == -1 || tmp == 2) {//!Puts own king in check, undo move
                             board.ChangePiece(y2, x2, tmpPiece, tmpColour);
                             board.ChangePiece(y1, x1, piece, colour);
                             return false;
                         }
                         board.ChangeScore(tmpPiece, tmpColour);
+                        if ( y2 == 0 ) //!Pawn promotion
+                            board.ChangePiece(y2, x2, EPiece::QUEEN, EColour::WHITE);
                         return true;
                     }
 
-                    if (board.m_EnPassant.first == y2 && board.m_EnPassant.second == x2 && board.m_EP_Allowed) {
+                    if (board.m_EnPassant.first == y2 && board.m_EnPassant.second == x2 && board.m_EP_Allowed) { //!Checks for enpassant
                         board.ChangePiece(y1, x1, EPiece::EMPTY, EColour::BLANK);
                         board.ChangePiece(y2, x2, piece, colour);
                         board.ChangePiece(y2 + 1, x2, EPiece::EMPTY, EColour::BLANK);
                         int tmp = board.CheckGameState();
-                        if (tmp == -1 || tmp == 2) {
+                        if (tmp == -1 || tmp == 2) {//!Puts own king in check, undo move
                             board.ChangePiece(y2, x2, EPiece::EMPTY, EColour::BLANK);
                             board.ChangePiece(y1, x1, piece, colour);
                             board.ChangePiece(y2 + 1, x2, EPiece::PAWN, EColour::BLACK);
@@ -102,33 +108,35 @@ bool CMove::PawnMove( CBoard &board, const EPiece &piece, const EColour &colour)
             if ( y2 - y1 == 2 && y1 != 1 )
                 return false;
             if ( x1 == x2 ){
-                if (this->CheckPathVert(board)) {
+                if (this->CheckPathVert(board)) {//!Either moves forward or captures enemy pieces
                     if (board.m_Board[y2][x2].GetPiece() == EPiece::EMPTY){
                         board.ChangePiece( y1, x1, EPiece::EMPTY, EColour::BLANK );
                         board.ChangePiece( y2, x2, piece, colour );
                         int tmp = board.CheckGameState();
-                        if ( tmp == 1 || tmp == 2 ) {
+                        if ( tmp == 1 || tmp == 2 ) {//!Puts own king in check, undo move
                             board.ChangePiece(y2, x2, EPiece::EMPTY, EColour::BLANK);
                             board.ChangePiece(y1, x1, piece, colour);
                             return false;
                         }
-                        if ( y2 - y1 == 2 ) {
+                        if ( y2 - y1 == 2 ) {//!Makes enpassant possible
                             board.m_EP_Allowed = 2;
                             board.m_EnPassant = std::make_pair(y1 + 1, x1);
                         }
+                        if ( y2 == 7 ) //!Pawn promotion
+                            board.ChangePiece(y2, x2, EPiece::QUEEN, EColour::BLACK);
                         return true;
                     }
                 }
             }
             else{
-                if ( y2 - y1 == 1 && abs( x1 - x2) == 1 ){
-                    if ( board.m_Board[y2][x2].GetPiece() != EPiece::EMPTY && board.m_Board[y2][x2].GetColour() != colour ){                            std::cout << "Neni tam prazdno\n";
+                if ( y2 - y1 == 1 && abs( x1 - x2) == 1 ){//!Captures
+                    if ( board.m_Board[y2][x2].GetPiece() != EPiece::EMPTY && board.m_Board[y2][x2].GetColour() != colour ){
                         EPiece tmpPiece = board.m_Board[y2][x2].GetPiece();
                         EColour tmpColour = board.m_Board[y2][x2].GetColour();
                         board.ChangePiece( y1, x1, EPiece::EMPTY, EColour::BLANK );
                         board.ChangePiece( y2, x2, piece, colour );
                         int tmp = board.CheckGameState();
-                        if ( tmp == 1 || tmp == 2 ) {
+                        if ( tmp == 1 || tmp == 2 ) {//!Puts own king in check, undo move
                             board.ChangePiece(y2, x2, tmpPiece, tmpColour);
                             board.ChangePiece(y1, x1, piece, colour);
                             return false;
@@ -136,18 +144,20 @@ bool CMove::PawnMove( CBoard &board, const EPiece &piece, const EColour &colour)
                         board.ChangeScore ( tmpPiece, tmpColour);
                         return true;
                     }
-                    if ( board.m_EnPassant.first == y2 && board.m_EnPassant.second == x2 && board.m_EP_Allowed ){
+                    if ( board.m_EnPassant.first == y2 && board.m_EnPassant.second == x2 && board.m_EP_Allowed ){//!Checks for enpassant
                         board.ChangePiece( y1, x1, EPiece::EMPTY, EColour::BLANK );
                         board.ChangePiece( y2, x2, piece, colour );
                         board.ChangePiece( y2-1, x2, EPiece::EMPTY, EColour::BLANK );
                         int tmp = board.CheckGameState();
-                        if ( tmp == 1 || tmp == 2 ) {
+                        if ( tmp == 1 || tmp == 2 ) {//!Puts own king in check, undo move
                             board.ChangePiece(y2, x2, EPiece::EMPTY, EColour::BLANK);
                             board.ChangePiece(y1, x1, piece, colour);
                             board.ChangePiece( y2-1, x2, EPiece::PAWN, EColour::WHITE );
                             return false;
                         }
                         board.ChangeScore ( EPiece::PAWN, EColour::WHITE);
+                        if ( y2 == 7 ) //!Pawn promotion
+                            board.ChangePiece(y2, x2, EPiece::QUEEN, EColour::BLACK);
                         return true;
                     }
                 }
@@ -158,9 +168,9 @@ bool CMove::PawnMove( CBoard &board, const EPiece &piece, const EColour &colour)
 }
 
 bool CMove::RookMove(CBoard &board, const EPiece &piece, const EColour &colour) {
-    if ( (x1 == x2 && this->CheckPathHor(board)) || ( y1 == y2 && this->CheckPathVert(board)) )
-        if ( this->Take(board, piece, colour) ){
-            if ( x1 == 0 && y1 == 0) board.m_LeftCastlingB = false;
+    if ( (x1 == x2 && this->CheckPathHor(board)) || ( y1 == y2 && this->CheckPathVert(board)) ) //!Checks pathing
+        if ( this->Take(board, piece, colour) ){ //!Captures piece at destination
+            if ( x1 == 0 && y1 == 0) board.m_LeftCastlingB = false;//!Forbids respective castling
             else if ( x1 == 7 && y1 == 0) board.m_RightCastlingB = false;
             else if ( x1 == 0 && y1 == 7) board.m_LeftCastlingW = false;
             else if ( x1 == 7 && y1 == 7) board.m_RightCastlingW = false;
@@ -170,30 +180,30 @@ bool CMove::RookMove(CBoard &board, const EPiece &piece, const EColour &colour) 
 }
 
 bool CMove::KnightMove(CBoard &board, const EPiece &piece, const EColour &colour) {
-    if ( (abs( x1 - x2) == 2 && abs( y1 - y2) == 1) || (abs( x1 - x2) == 1 && abs( y1 - y2) == 2) )
-        if ( this->Take(board, piece, colour) )
+    if ( (abs( x1 - x2) == 2 && abs( y1 - y2) == 1) || (abs( x1 - x2) == 1 && abs( y1 - y2) == 2) )//!Checks pathing
+        if ( this->Take(board, piece, colour) )//!Captures piece at destination
             return true;
     return false;
 }
 
 bool CMove::BishopMove(CBoard &board, const EPiece &piece, const EColour &colour) {
-    if ( abs(x1 - x2) == abs(y1 - y2) && this->CheckPathDiag(board) )
-        if ( this->Take(board, piece, colour) )
+    if ( abs(x1 - x2) == abs(y1 - y2) && this->CheckPathDiag(board) )//!Checks pathing
+        if ( this->Take(board, piece, colour) )//!Captures piece at destination
             return true;
     return false;
 }
 
 bool CMove::QueenMove(CBoard &board, const EPiece &piece, const EColour &colour) {
-    if ( (abs(x1 - x2) == abs(y1 - y2) && this->CheckPathDiag(board)) || (x1 == x2 && this->CheckPathVert(board)) || ( y1 == y2 && this->CheckPathHor(board)) )
-        if ( this->Take(board, piece, colour) )
+    if ( (abs(x1 - x2) == abs(y1 - y2) && this->CheckPathDiag(board)) || (x1 == x2 && this->CheckPathVert(board)) || ( y1 == y2 && this->CheckPathHor(board)) )//!Checks pathing
+        if ( this->Take(board, piece, colour) )//!Captures piece at destination
             return true;
     return false;
 }
 
 bool CMove::KingMove(CBoard &board, const EPiece &piece, const EColour &colour) {
-    if ( ( abs(x1 - x2) == 1 || (abs(x1 - x2) == 0 || abs(y1 - y2) == 1 || abs(y1 - y2) == 0) ) && ( abs(x1 - x2) > 1 && abs(y1 - y2) > 1 ) && !( abs(x1 - x2) == 0 && abs(y1 - y2) == 0 ) )
-        if ( this->Take(board, piece, colour) ) {
-            if ( colour == EColour::WHITE ){
+    if ( ( abs(x1 - x2) == 1 || (abs(x1 - x2) == 0 || abs(y1 - y2) == 1 || abs(y1 - y2) == 0) ) && ( abs(x1 - x2) > 1 && abs(y1 - y2) > 1 ) && !( abs(x1 - x2) == 0 && abs(y1 - y2) == 0 ) )//!Checks pathing
+        if ( this->Take(board, piece, colour) ) {//!Captures piece at destination
+            if ( colour == EColour::WHITE ){//!Forbids respective castling
                 board.m_RightCastlingW = false;
                 board.m_LeftCastlingW = false;
             }
@@ -201,14 +211,12 @@ bool CMove::KingMove(CBoard &board, const EPiece &piece, const EColour &colour) 
                 board.m_RightCastlingB = false;
                 board.m_LeftCastlingB = false;
             }
-            std::cin.get();
             return true;
         }
-    if ( ( abs(x1 - x2) == 2 || abs(x1 - x2) == 3 ) && y1 == y2 ) {
+    if ( ( abs(x1 - x2) == 2 || abs(x1 - x2) == 3 ) && y1 == y2 ) {//!Castling
         if (this->Castling(board))
             return true;
     }
-    std::cin.get();
     return false;
 }
 
@@ -301,14 +309,15 @@ bool CMove::CheckPathDiag(const CBoard &board) const
 
 bool CMove::Take( CBoard & board, const EPiece & piece, const EColour & colour )
 {
+    //!Captures enemy piece
     EPiece tmpPiece = board.m_Board[y2][x2].GetPiece();
     EColour tmpColour = board.m_Board[y2][x2].GetColour();
-    if ( tmpColour == colour )
+    if ( tmpColour == colour )//!Captures pieces of same colour is forbidden
         return false;
     board.ChangePiece(y1, x1, EPiece::EMPTY, EColour::BLANK);
     board.ChangePiece(y2, x2, piece, colour);
     int tmp = board.CheckGameState();
-    if ( ( tmp == 1 && colour == EColour::BLACK ) || ( tmp == -1 && colour == EColour::WHITE ) || tmp == 2 ) {
+    if ( ( tmp == 1 && colour == EColour::BLACK ) || ( tmp == -1 && colour == EColour::WHITE ) || tmp == 2 ) {//!Puts own king in check, undo move
         board.ChangePiece(y2, x2, tmpPiece, tmpColour);
         board.ChangePiece(y1, x1, piece, colour);
         return false;
@@ -318,7 +327,7 @@ bool CMove::Take( CBoard & board, const EPiece & piece, const EColour & colour )
 }
 
 bool CMove::Castling(CBoard &board) {
-    if ( x2 == 6 && y2 == 0 && board.m_RightCastlingB ){
+    if ( x2 == 6 && y2 == 0 && board.m_RightCastlingB ){//!Checks if castling is possible
         if ( board.m_Board[y1][x1+1].GetPiece() == EPiece::EMPTY && board.m_Board[y1][x2].GetPiece() == EPiece::EMPTY ){
             if (board.CheckGameState() != 1){
                 board.ChangePiece(y1, x1, EPiece::EMPTY, EColour::BLANK);

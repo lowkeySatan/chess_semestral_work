@@ -1,4 +1,4 @@
-all: build/CSquare.o build/CBoard.o build/CMove.o build/CGame.o build/CCommand.o build/CApplication.o build/main.o build/CPlayer.o build/CPlayerArtificial.o doc
+all: build/CSquare.o build/CBoard.o build/CMove.o build/CGame.o build/CCommand.o build/CApplication.o build/main.o build/CPlayer.o build/CPlayerArtificial.o
 	mkdir -p build
 	g++ build/CSquare.o build/CBoard.o build/CMove.o build/CGame.o build/CCommand.o build/CApplication.o build/main.o build/CPlayer.o build/CPlayerArtificial.o -o vavrasim
 

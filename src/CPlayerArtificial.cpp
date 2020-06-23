@@ -4,6 +4,7 @@
 
 std::string CPlayerArtificial::AwaitMove(const CBoard &board)
 {
+    //!Switches AI depending on selected strength
     if ( m_AI_Strength == 1 ) return RandAI ( board );
     if ( m_AI_Strength == 2 ) return SemiRandAI ( board );
     if ( m_AI_Strength == 3 ) return  Minimax_T1 ( board );
@@ -18,18 +19,18 @@ CPlayerArtificial::CPlayerArtificial(const EColour &colour, const int &str)
 
 std::string CPlayerArtificial::RandAI(const CBoard &board)
 {
-    std::cin.get();
+    //todo
     return "rand\n";
 }
 
 std::string CPlayerArtificial::SemiRandAI(const CBoard &board)
 {
-    std::cin.get();
+    //todo
     return "semi\n";
 }
 
 std::string CPlayerArtificial::Minimax_T1(const CBoard &board)
 {
-    std::cin.get();
+    //todo
     return "mini\n";
 }

@@ -5,14 +5,15 @@ void CApplication::Run()
 {
     while ( m_Running )
     {
-        if ( !m_InGame ) this->PrintMenu();
+        if ( !m_InGame ) this->PrintMenu(); //!Prints main menu or game board
         else m_CGame.Print( m_Message );
-        this->AwaitCommand();
+        this->AwaitCommand(); //!Reads command
     }
 }
 
 void CApplication::PrintMenu()
 {
+    //!Clears console
     #if defined _WIN32
         system("cls");
     #elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
@@ -37,7 +38,7 @@ void CApplication::AwaitCommand()
 {
     CCommand command;
     std::pair <int, std::string> outcome;
-    if ( !m_InGame )
+    if ( !m_InGame ) //!Reads command directly from user or awaits input from player (AI or human)
         std::cin >> command;
     else
         m_CGame.AwaitMove() >> command;

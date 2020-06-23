@@ -7,7 +7,7 @@ std::istream & operator >> ( std::istream & is, CCommand & command )
 {
     std::string s;
     std::getline ( is, s );
-    command.m_Command = s.substr( 0, s.find(' ') );
+    command.m_Command = s.substr( 0, s.find(' ') );//!Parses input into command and parameter
     if ( s.find(' ') < s.size() ) command.m_Param = s.substr( s.find(' ') + 1 );
     return is;
 }
@@ -38,19 +38,33 @@ std::pair<int, std::string> CCommand::Do ( CGame & game )
 
         case ECommand::LOADGAME: //!loads game from file
             if ( m_Param.empty() ) return std::make_pair ( 0, "loadgame: Missing filename\n" );
-            s = "Loaded from ";
-            s+= this->m_Param;
-            s+= '\n';
-            game.Load( m_Param );
-            return std::make_pair ( 1, s );
+            if ( game.Load( m_Param ) ){
+                s = "Successfully loaded from ";
+                s+= this->m_Param;
+                s+= '\n';
+                return std::make_pair ( 1, s );
+            }
+            else{
+                s = "Couldn't load from ";
+                s+= this->m_Param;
+                s+= '\n';
+                return std::make_pair ( 0, s );
+            }
 
         case ECommand::SAVEGAME: //!saves game to file
             if ( m_Param.empty() ) return std::make_pair ( 0, "savegame: Missing filename\n" );
-            s = "Successfully saved to ";
-            s+= this->m_Param;
-            s+= '\n';
-            game.Save( m_Param );
-            return std::make_pair ( 2, s );
+            if ( game.Save( m_Param ) ){
+                s = "Successfully saved to ";
+                s+= this->m_Param;
+                s+= '\n';
+                return std::make_pair ( 2, s );
+            }
+            else{
+                s = "Couldn't save to ";
+                s+= this->m_Param;
+                s+= '\n';
+                return std::make_pair ( 0, s );
+            }
 
         case ECommand::NEWGAME: //!starts new game
             if ( !m_Param.empty() ) return std::make_pair ( 0, "newgame: Parameter not allowed\n" );

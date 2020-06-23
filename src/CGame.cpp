@@ -40,6 +40,7 @@ void CGame::NewGame()
 
 void CGame::Print( const std::string & message ) const
 {
+    //!Clears console
     #if defined _WIN32
         system("cls");
     #elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
@@ -63,13 +64,15 @@ bool CGame::Load(const std::string &filename)
             m_BlackType = tmp[2] + '0';
         }
     m_Board.New();
-    while ( std::getline ( in, tmp ) )
+    m_WhiteTurn = true;
+    while ( std::getline ( in, tmp ) ) //!Loads game by playing moves
     {
         if ( !this->MakeMove ( tmp ) ){
             m_Board.New();
             return false;
         }
     }
+
     if ( m_WhiteType != 0 )
         m_PlayerWhite = new CPlayerArtificial ( EColour::WHITE, m_WhiteType );
     else
@@ -85,12 +88,12 @@ bool CGame::Save(const std::string &filename) const
 {
     std::string tmp = "examples/";
     tmp += filename;
-    std::ofstream out ( tmp, std::ios::trunc );
+    std::ofstream out ( tmp, std::ios::trunc );//!Deletes file content
     if ( !out.is_open() )
         return false;
 
     out << m_WhiteType << ' ' << m_BlackType << '\n';
-    for (const auto & i : m_MoveLog) {
+    for (const auto & i : m_MoveLog) {//!Saves made moves
         out << i << '\n';
     }
     out.close();
@@ -99,7 +102,7 @@ bool CGame::Save(const std::string &filename) const
 
 std::stringstream CGame::AwaitMove()
 {
-    std::stringstream ss;
+    std::stringstream ss;//!Reads player moves
     if ( m_WhiteTurn )
          ss.str ( m_PlayerWhite->AwaitMove ( m_Board ) );
     else
@@ -114,7 +117,7 @@ void CGame::SwitchTurn()
 
 bool CGame::MakeMove(const std::string &moveStr)
 {
-    CMove move(moveStr);
+    CMove move(moveStr); //!Makes move that was inputed
     if (move.MakeMove(m_Board, m_WhiteTurn)) {
         m_MoveLog.push_back(move);
         this->SwitchTurn();

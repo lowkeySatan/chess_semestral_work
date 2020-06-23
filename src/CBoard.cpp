@@ -118,13 +118,12 @@ int CBoard::CheckGameState() const
     bool blackCheck = false;
     bool whiteCheck = false;
     for (int i = 0; i < 8; ++i)
-        for (int j = 0; j < 8; ++j) {
+        for (int j = 0; j < 8; ++j) { //!Finds both kings and decides whether they're in check
             if ( m_Board[i][j].GetPiece() == EPiece::KING ){
                 if ( m_Board[i][j].GetColour() == EColour::WHITE )
                     whiteCheck = this->CheckCheck( EColour::BLACK, j, i );
                 else
                     blackCheck = this->CheckCheck( EColour::WHITE, j, i );
-
             }
         }
     if ( whiteCheck && blackCheck ) return 2;
@@ -141,7 +140,6 @@ void CBoard::ChangePiece(const int &x, const int &y, const EPiece &piece, const 
 void CBoard::ChangeScore(const EPiece &piece, const EColour &colour)
 {
     switch (piece) {
-
         case EPiece::PAWN:
             if ( colour == EColour::WHITE )
                 m_Score += -1;
@@ -298,7 +296,6 @@ bool CBoard::CheckCheck(const EColour &colour, const int &x, const int &y) const
         }
     }
     if (flag){
-        std::cout << "dru";
         return true;
     }
 
@@ -337,9 +334,6 @@ bool CBoard::CheckCheck(const EColour &colour, const int &x, const int &y) const
             if ( m_Board[y+1][x+2].GetPiece() == EPiece::KNIGHT && m_Board[y+1][x+2].GetColour() == colour )
                 return true;
     }
-
-
-
     return false;
 }
 
